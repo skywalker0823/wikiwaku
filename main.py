@@ -51,7 +51,7 @@ def hello_pubsub(cloud_event):
         print("Error broadcasting message: ", r.status_code, r.text)
 
 # Line webhook response ok
-@app.post("/callback")
+@app.post("/")
 async def line_webhook(request: Request):
     if request.method == 'POST':
         data = request.get_json()
