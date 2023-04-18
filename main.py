@@ -14,11 +14,10 @@ def hello_pubsub(cloud_event):
     print("!!! Active !!!")
     print("Sending Line update message")
     data = {
-        "to": os.getenv("User_ID"),
         "messages": [
             {
                 "type": "text",
-                "text": "Cloud Run 功能上線測試 by 軒"
+                "text": "GCP+Broadcast 功能測試 by 軒"
             }
         ]
     }
@@ -26,10 +25,12 @@ def hello_pubsub(cloud_event):
         "Content-Type": "application/json",
         "Authorization": "Bearer " + os.getenv("Channel_Access_Token")
     }
-    r = requests.post("https://api.line.me/v2/bot/message/push", data=json.dumps(data), headers=headers)
+    r = requests.post("https://api.line.me/v2/bot/message/broadcast", data=json.dumps(data), headers=headers)
     if r.status_code == 200:
-        print("Line message sent successfully")
-    print(r)
+        print("Line message broadcast successfully")
+        print(r)
+    else:
+        print("Error broadcasting message: ", r.status_code, r.text)
 
 # Triggered from a message from line user post request
 @app.post("/my-path")
