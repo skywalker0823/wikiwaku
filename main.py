@@ -1,5 +1,8 @@
 import base64
 import functions_framework
+from fastapi import FastAPI, Request
+
+app = FastAPI()
 
 # Triggered from a message on a Cloud Pub/Sub topic.
 @functions_framework.cloud_event
@@ -9,8 +12,9 @@ def hello_pubsub(cloud_event):
     print("test 123")
     print(base64.b64decode(cloud_event.data["message"]["data"]))
 
-# Triggered from a message from line user
-@functions_framework.http
-def hello_http(request):
+# Triggered from a message from line user post request
+@app.post("/my-path")
+async def hello_http(request: Request):
     print("!!! User-ask !!!")
-    print(request.get_json())
+    data = await request.json()
+    print(data)
