@@ -1,17 +1,18 @@
 steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   # Deploy to cloud function
-  args: [
-  'functions', 'deploy', 'wiki-waku-function',
-  '--runtime', 'python39',
-  '--allow-unauthenticated',
-  '--region', 'us-central1',
-  '--entry-point', 'hello_pubsub',
-  '--source', '.',
-  '--memory', '128Mi',
-  '--timeout', '60s',
-  '--max-instances', '1',
-  '--gen2',
-  '--trigger-event', 'google.pubsub.topic.publish',
-  '--trigger-resource', 'projects/${PROJECT_ID}/topics/wikiwaku-topic'
-]
+  args:
+    - functions
+    - deploy
+    - wiki-waku-function
+    - --gen2
+    - --runtime=python39
+    - --allow-unauthenticated
+    - --region=us-central1
+    - --entry-point=hello_pubsub
+    - --source=.
+    - --memory=128Mi
+    - --timeout=60s
+    - --max-instances=1
+    - --trigger-event=google.pubsub.topic.publish
+    - --trigger-resource=projects/${PROJECT_ID}/topics/wikiwaku-topic
