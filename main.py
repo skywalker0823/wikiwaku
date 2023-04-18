@@ -32,10 +32,9 @@ def hello_pubsub(cloud_event):
     else:
         print("Error broadcasting message: ", r.status_code, r.text)
 
-# Triggered from a message from line user post request
-@app.post("/my-path")
-async def hello_http(request: Request):
-    print("!!! User-ask !!!")
-    data = await request.json()
-    print(data)
-
+# Line webhook response ok
+@app.post("/callback")
+async def line_webhook(request: Request):
+    print(request.body)
+    return {"message": "ok"}
+    
