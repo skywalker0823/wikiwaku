@@ -26,12 +26,12 @@ def hello_pubsub(cloud_event):
         print("Error broadcasting message: ", wiki_response.status_code, wiki_response.text)
     # put all i["text"] together and bread lines
     for i in response:
-        text += i["text"] + "\n"
+        text += i["pages"][0]["title"] + i["text"] + "\n" + "\n"
     data = {
         "messages": [
             {
                 "type": "text",
-                "text": "歷史上的今天: " + date
+                "text": "歷史上的今天 for " + date
             },
             {
                 "type": "text",

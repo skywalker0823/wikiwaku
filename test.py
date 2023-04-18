@@ -50,9 +50,25 @@ if response.status_code != 200:
     print("Error broadcasting message: ", response.status_code, response.text)
 
 for i in data:
-    text += i["text"] + "\n"
+    text += i["pages"][0]["title"] + i["text"] + "\n" + "\n"
 
 print(text)
+
+data = {
+    "messages": [
+        {
+            "type": "text",
+            "text": "歷史上的今天: " + date
+        },
+        {
+            "type": "text",
+            "text": text
+        }
+    ]
+}
+
+
+# print(data)
     
 
 
