@@ -4,7 +4,6 @@ steps:
   args: [
   'functions', 'deploy', 'wiki-waku-function',
   '--runtime', 'python39',
-  '--trigger-http',
   '--allow-unauthenticated',
   '--region', 'us-central1',
   '--entry-point', 'hello_pubsub',
