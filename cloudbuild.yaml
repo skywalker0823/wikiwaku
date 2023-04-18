@@ -15,4 +15,4 @@ steps:
     - --timeout=60s
     - --max-instances=1
     - --trigger-event=google.pubsub.topic.publish
-    - --trigger-resource=projects/${PROJECT_ID}/topics/wikiwaku-topic
+    - --trigger-resource=wikiwaku-topic
