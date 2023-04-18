@@ -35,6 +35,16 @@ def hello_pubsub(cloud_event):
 # Line webhook response ok
 @app.post("/callback")
 async def line_webhook(request: Request):
-    print(request.body)
-    return {"message": "ok"}
+    if request.method == 'POST':
+        data = request.get_json()
+        events = data['events']
+        for event in events:
+            event_type = event['type']
+            if event_type == 'message':
+                message_text = event['message']['text']
+                print('User sent message:', message_text)
+        return 'OK'
+    else:
+        print('Webhook error')
+        return 'Webhook error'
     
