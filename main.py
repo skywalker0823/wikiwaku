@@ -1,7 +1,7 @@
 import base64
 import functions_framework
 from fastapi import FastAPI, Request
-import requests, json, dotenv, os
+import requests, json, dotenv, os, datetime
 
 dotenv.load_dotenv()
 
@@ -12,12 +12,30 @@ app = FastAPI()
 def hello_pubsub(cloud_event):
     # Print out the data from Pub/Sub, to prove that it worked
     print("!!! Active !!!")
-    print("Sending Line update message")
+    today = datetime.datetime.now()
+    date = today.strftime('%m/%d')
+    text = ""
+    url = 'https://api.wikimedia.org/feed/v1/wikipedia/zh/onthisday/selected/' + date
+    wiki_headers = {
+        'Authorization': 'Bearer '+ os.getenv('Wiki_token'),
+        'User-Agent': os.getenv('My_mail')
+    }
+    wiki_response = requests.get(url, headers=wiki_headers)
+    response = wiki_response.json().get('selected')
+    if wiki_response.status_code != 200:
+        print("Error broadcasting message: ", wiki_response.status_code, wiki_response.text)
+    # put all i["text"] together and bread lines
+    for i in response:
+        text += i["text"] + "\n"
     data = {
         "messages": [
             {
                 "type": "text",
-                "text": "GCP+Broadcast 功能測試 by 軒"
+                "text": "歷史上的今天: " + date
+            },
+            {
+                "type": "text",
+                "text": text
             }
         ]
     }
