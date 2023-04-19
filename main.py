@@ -7,31 +7,36 @@ dotenv.load_dotenv()
 
 app = FastAPI()
 
-# Triggered from a message on a Cloud Pub/Sub topic.
+WIKI_TOKEN = os.getenv('Wiki_token')
+WIKI_MAIL = os.getenv('My_mail')
+CHANNEL_ACCESS_TOKEN = os.getenv('Channel_Access_Token')
+
+
+# Wiki API section
 @functions_framework.cloud_event
 def hello_pubsub(cloud_event):
-    # Print out the data from Pub/Sub, to prove that it worked
     print("!!! Active !!!")
     today = datetime.datetime.now()
     date = today.strftime('%m/%d')
     text = ""
-    url = 'https://api.wikimedia.org/feed/v1/wikipedia/zh/onthisday/selected/' + date
+    url = f'https://api.wikimedia.org/feed/v1/wikipedia/zh/onthisday/selected/{date}'
     wiki_headers = {
-        'Authorization': 'Bearer '+ os.getenv('Wiki_token'),
-        'User-Agent': os.getenv('My_mail')
+        'Authorization': f'Bearer {WIKI_TOKEN}',
+        'User-Agent': WIKI_MAIL
     }
     wiki_response = requests.get(url, headers=wiki_headers)
+
     response = wiki_response.json().get('selected')
     if wiki_response.status_code != 200:
         print("Error broadcasting message: ", wiki_response.status_code, wiki_response.text)
-    # put all i["text"] together and bread lines
+    # put all i["text"] together and break lines
     for i in response:
         text += i["pages"][0]["title"] + i["text"] + "\n" + "\n"
     data = {
         "messages": [
             {
                 "type": "text",
-                "text": "歷史上的今天 for " + date
+                "text": f"歷史上的今天 for {date}"
             },
             {
                 "type": "text",
@@ -39,9 +44,12 @@ def hello_pubsub(cloud_event):
             }
         ]
     }
+
+
+    # Line broadcast section
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + os.getenv("Channel_Access_Token")
+        "Authorization": f"Bearer {CHANNEL_ACCESS_TOKEN}"
     }
     r = requests.post("https://api.line.me/v2/bot/message/broadcast", data=json.dumps(data), headers=headers)
     if r.status_code == 200:
@@ -49,6 +57,8 @@ def hello_pubsub(cloud_event):
         print(r)
     else:
         print("Error broadcasting message: ", r.status_code, r.text)
+
+
 
 # Line webhook response ok
 @app.post("/")

@@ -27,6 +27,9 @@ dotenv.load_dotenv()
 # else:
 #     print("Message broadcasted successfully!")
 
+WIKI_TOKEN = os.getenv('Wiki_token')
+WIKI_MAIL = os.getenv('My_mail')
+CHANNEL_ACCESS_TOKEN = os.getenv('Channel_Access_Token')
 
 import datetime
 # import requests
@@ -36,11 +39,11 @@ date = today.strftime('%m/%d')
 
 print(f"抓取{date}的資料")
 
-url = 'https://api.wikimedia.org/feed/v1/wikipedia/zh/onthisday/selected/' + date
+url = f'https://api.wikimedia.org/feed/v1/wikipedia/zh/onthisday/selected/{date}'
 
 headers = {
-  'Authorization': 'Bearer '+ os.getenv('Wiki_token'),
-  'User-Agent': os.getenv('My_mail')
+  'Authorization': f'Bearer {WIKI_TOKEN}',
+  'User-Agent': WIKI_MAIL
 }
 
 response = requests.get(url, headers=headers)
