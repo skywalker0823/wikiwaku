@@ -56,7 +56,6 @@ with open('origin_data.json', 'w', encoding='utf-8') as f:
 
 data_set = {"messages": []}
 
-
 for i in data:
     message = i['text']
     year = i['pages'][0]['title']
@@ -68,17 +67,19 @@ for i in data:
     except:
         print("image not exists")
     text = f"{year}{message}\n\n看更多:{more_info}\n{image}"
-    # put text into data messages
-    data_set["messages"].append({
-        "type": "text",
-        "text": f"歷史上的今天 for {date}"
-    })
     data_set["messages"].append({
         "type": "text",
         "text": text
     })
 
-print(data_set)
+today_date_info = {"messages": [
+    {
+        "type": "text",
+        "text": f"歷史上的今天 for {date}"
+    }
+]}
+
+print(today_date_info,data_set)
 
 ### >>>This is the final data set that will be sent to Line API<<< ###
 with open('test.json', 'w', encoding='utf-8') as f:

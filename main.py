@@ -46,26 +46,28 @@ def hello_pubsub(cloud_event):
         # put text into data messages
         data_set["messages"].append({
             "type": "text",
-            "text": f"歷史上的今天 for {date}"
-        })
-        data_set["messages"].append({
-            "type": "text",
             "text": text
         })
     
-
+    today_date_info = {"messages": [
+        {
+            "type": "text",
+            "text": f"歷史上的今天 for {date}"
+        }
+    ]}
 
     # Line broadcast section
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {CHANNEL_ACCESS_TOKEN}"
     }
+    today_r = requests.post("https://api.line.me/v2/bot/message/broadcast", data=json.dumps(today_date_info), headers=headers)
     r = requests.post("https://api.line.me/v2/bot/message/broadcast", data=json.dumps(data_set), headers=headers)
-    if r.status_code == 200:
+    if r.status_code == 200 and today_r.status_code == 200:
         print("Line message broadcast successfully")
         print(r)
     else:
-        print("Error broadcasting message: ", r.status_code, r.text)
+        print("Error broadcasting message: ", r.status_code, r.text, today_r.status_code, today_r.text)
 
 
 # Line message example json
