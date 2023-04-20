@@ -1,8 +1,8 @@
-# Auto grep wikipedia history of today, and send to line.
+# Greps wikipedia history of today every morning, and broadcast to Line messenger.
 
 
 
-## GCP api used
+## Tech Stack
 * Cloud Scheduler
  - Used to schedule the task, activate pub/sub every day at 09:00
 * Cloud Functions
@@ -10,8 +10,7 @@
 * Cloud Pub/Sub
  - Used to trigger cloud function
 * Cloud Secret Manager
- - Used to store the line token
-
+ - Used to store the line and wikipedia token
 * Line webhook
 
 這個project的目的是要抓取wikipedia的每日歷史，並且發送到line上
