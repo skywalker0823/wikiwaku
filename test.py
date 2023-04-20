@@ -45,33 +45,43 @@ headers = {
   'Authorization': f'Bearer {WIKI_TOKEN}',
   'User-Agent': WIKI_MAIL
 }
-
 response = requests.get(url, headers=headers)
-data = response.json().get('selected')
-text = ""
 if response.status_code != 200:
     print("Error broadcasting message: ", response.status_code, response.text)
 
+data = response.json().get('selected')
+
+with open('origin_data.json', 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=4)
+
+data_set = {"messages": []}
+
+
 for i in data:
-    text += i["pages"][0]["title"] + i["text"] + "\n" + "\n"
+    message = i['text']
+    year = i['pages'][0]['title']
+    more_info = i['pages'][1]['content_urls']['mobile']['page']
+    image = ""
+    # check if image exists
+    try:
+        image = i['pages'][1]['thumbnail']['source']
+    except:
+        print("image not exists")
+    text = f"{year}{message}\n\n看更多:{more_info}\n{image}"
+    # put text into data messages
+    data_set["messages"].append({
+        "type": "text",
+        "text": f"歷史上的今天 for {date}"
+    })
+    data_set["messages"].append({
+        "type": "text",
+        "text": text
+    })
 
-print(text)
+print(data_set)
 
-data = {
-    "messages": [
-        {
-            "type": "text",
-            "text": "歷史上的今天: " + date
-        },
-        {
-            "type": "text",
-            "text": text
-        }
-    ]
-}
-
-
-# print(data)
-    
+### >>>This is the final data set that will be sent to Line API<<< ###
+with open('test.json', 'w', encoding='utf-8') as f:
+    json.dump(data_set, f, ensure_ascii=False, indent=4)
 
 

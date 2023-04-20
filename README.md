@@ -14,7 +14,7 @@
  - Used to store the line and wikipedia token
 * Line webhook
 
-這個project的目的是要抓取wikipedia的每日歷史，並且發送到line上
+這個project的目的是要抓取wikipedia的歷史上的今天，並且每日固定發送到 Line 上
 1. Code commit 到 Github
 2. 觸發 Cloud Build
 3. CloudBuild 部署到 CLoud Function (Gen-2, 底層是 Cloud Run)
@@ -22,3 +22,7 @@
 5. Cloud Pub/Sub 觸發 Cloud Function 並且抓取 wikipedia 的每日歷史
 6. Cloud Function 透過 Line webhook 發送到 Line
 
+
+# 未來功能
+* 提升互動性, 星座 或是每日推薦, 山岳資料, 串接公開平台api
+* chatGPT 基本功能
