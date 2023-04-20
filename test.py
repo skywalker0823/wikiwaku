@@ -62,11 +62,11 @@ for i in data:
     more_info = i['pages'][1]['content_urls']['mobile']['page']
     image = ""
     # check if image exists
-    try:
-        image = i['pages'][1]['thumbnail']['source']
-    except:
-        print("image not exists")
-    text = f"{year}{message}\n\n看更多:{more_info}\n{image}"
+    # try:
+    #     image = i['pages'][1]['thumbnail']['source']
+    # except:
+    #     print("image not exists")
+    text = f"{year}{message}\n\n看更多:{more_info}"
     data_set["messages"].append({
         "type": "text",
         "text": text

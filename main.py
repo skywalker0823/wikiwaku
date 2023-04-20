@@ -36,13 +36,13 @@ def hello_pubsub(cloud_event):
         year = i['pages'][0]['title']
         message = i['text']
         more_info = i['pages'][1]['content_urls']['mobile']['page']
-        image = ""
-        # check if image exists
-        try:
-            image = i['pages'][1]['thumbnail']['source']
-        except:
-            print("image not exists")
-        text = f"{year}{message}\n\n看更多:{more_info}\n{image}"
+        # image = ""
+        # # check if image exists
+        # try:
+        #     image = i['pages'][1]['thumbnail']['source']
+        # except:
+        #     print("image not exists")
+        text = f"{year}{message}\n\n看更多:{more_info}"
         # put text into data messages
         data_set["messages"].append({
             "type": "text",
