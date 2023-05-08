@@ -1,7 +1,5 @@
-import base64
-import functions_framework
+import base64, functions_framework, openai, requests, json, dotenv, os, datetime
 from fastapi import FastAPI, Request
-import requests, json, dotenv, os, datetime
 
 dotenv.load_dotenv()
 
@@ -10,6 +8,8 @@ app = FastAPI()
 WIKI_TOKEN = os.getenv('Wiki_token')
 WIKI_MAIL = os.getenv('My_mail')
 CHANNEL_ACCESS_TOKEN = os.getenv('Channel_Access_Token')
+NASA_API_KEY = os.getenv('NASA_API_KEY')
+openai.api_key = os.getenv('OPEN_AI_API_KEY')
 
 
 # Wiki API section
@@ -32,23 +32,14 @@ def hello_pubsub(cloud_event):
 
     data_set = {"messages": []}
     for i in response:
-        # text += i["pages"][0]["title"] + i["text"] + "\n" + "\n"
         year = i['pages'][0]['title']
         message = i['text']
         more_info = i['pages'][1]['content_urls']['mobile']['page']
-        # image = ""
-        # # check if image exists
-        # try:
-        #     image = i['pages'][1]['thumbnail']['source']
-        # except:
-        #     print("image not exists")
         text = f"{year}{message}\n\n看更多:{more_info}"
-        # put text into data messages
         data_set["messages"].append({
             "type": "text",
             "text": text
         })
-    
     today_date_info = {"messages": [
         {
             "type": "text",
@@ -56,45 +47,57 @@ def hello_pubsub(cloud_event):
         }
     ]}
 
+
+    # NASA API section
+    nasa_url = f'https://api.nasa.gov/planetary/apod?api_key={NASA_API_KEY}'
+    nasa_response = requests.get(nasa_url)
+    if nasa_response.status_code == 200:
+        print("NASA API request successfully...continue")
+        nasa_data = nasa_response.json()
+        nasa_image = nasa_data['url']
+        nasa_explanation = nasa_data['explanation']
+        translate_response = openai.Completion.create(
+            model = "text-davinci-003",
+            prompt = f"Translate this to Triditional Chinese: \n\n{nasa_explanation}\n\n",
+            temperature = 0.7,
+            max_tokens = 3000
+        )
+        translated_text = translate_response['choices'][0]['text'].encode('utf-8').decode('utf-8')
+        nasa_image_set = {
+            "type": "image",
+            "originalContentUrl": nasa_image,
+            "previewImageUrl": nasa_image
+        }
+        nasa_text_set = {
+            "type": "text",
+            "text": translated_text
+        }
+
     # Line broadcast section
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {CHANNEL_ACCESS_TOKEN}"
     }
+
     today_r = requests.post("https://api.line.me/v2/bot/message/broadcast", data=json.dumps(today_date_info), headers=headers)
     r = requests.post("https://api.line.me/v2/bot/message/broadcast", data=json.dumps(data_set), headers=headers)
+    nasa_image_r = requests.post("https://api.line.me/v2/bot/message/broadcast", data=json.dumps(nasa_image_set), headers=headers)
+    nasa_r = requests.post("https://api.line.me/v2/bot/message/broadcast", data=json.dumps(nasa_text_set), headers=headers)
     if r.status_code == 200 and today_r.status_code == 200:
         print("Line message broadcast successfully")
         print(r)
+    if nasa_image_r.status_code == 200 and nasa_r.status_code == 200:
+        print("NASA message broadcast successfully")
+        print(nasa_image_r, nasa_r)
     else:
         print("Error broadcasting message: ", r.status_code, r.text, today_r.status_code, today_r.text)
 
 
-# Line message example json
-# {
-#     "messages": [
-#         {
-#             "type": "text",
-#             "text": "1999年埃里克·哈里斯和迪倫·克萊伯德在美國科羅拉多州高中發動槍擊事件，造成13人死亡。"
-#         },
-#         {
-#             "type": "text",
-#             "text": "1978年大韓航空902號班機因為誤入蘇聯領空而遭到蘇聯空軍的攻擊，被迫在州緊急降落。"
-#         },
-#         {
-#             "type": "text",
-#             "text": "1862年法國微生物學家（圖）和生理學家克洛德·貝爾納完成首次的殺菌測試。"
-#         },
-#         {
-#             "type": "text",
-#             "text": "1792年法國將軍夏爾·弗朗索瓦·迪穆里埃促成國民立法議會向奧地利宣戰，法國大革命戰爭爆發。"
-#         },
-#         {
-#             "type": "text",
-#             "text": "1653年英格蘭共和國軍事將領奧立佛·克倫威爾發動政變並解散殘缺議會，其後以小議會取代。"
-#         }
-#     ]
-# }
+
+
+
+
+
 
 
 
