@@ -51,6 +51,8 @@ def hello_pubsub(cloud_event):
     # NASA API section
     nasa_url = f'https://api.nasa.gov/planetary/apod?api_key={NASA_API_KEY}'
     nasa_response = requests.get(nasa_url)
+    nasa_image_set = None
+    nasa_text_set = None
     if nasa_response.status_code == 200:
         print("NASA API request successfully...continue")
         nasa_data = nasa_response.json()
