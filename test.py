@@ -4,6 +4,7 @@ import requests
 import json
 import dotenv
 import openai
+import datetime
 
 dotenv.load_dotenv()
 
@@ -90,24 +91,41 @@ openai.api_key = os.getenv('OPEN_AI_API_KEY')
 
 
 
-# NASA API
-url = f'https://api.nasa.gov/planetary/apod?api_key={NASA_API_KEY}'
-response = requests.get(url)
-if response.status_code == 200:
-    print("success")
-    data = response.json()
-    print(data)
-    comments = data['explanation']
-    image = data['url']
-    translate_result = openai.Completion.create(
-        model = "text-davinci-003",
-        prompt = f"Translate this to Triditional Chinese: \n\n{comments}\n\n",
-        temperature = 0.7,
-        max_tokens = 3000
-        )
-    translated_comments = translate_result['choices'][0]['text'].encode('utf-8').decode('utf-8')
-    print(translated_comments)
+# # NASA API
+# url = f'https://api.nasa.gov/planetary/apod?api_key={NASA_API_KEY}'
+# response = requests.get(url)
+# if response.status_code == 200:
+#     print("success")
+#     data = response.json()
+#     print(data)
+#     comments = data['explanation']
+#     image = data['url']
+#     translate_result = openai.Completion.create(
+#         model = "text-davinci-003",
+#         prompt = f"Translate this to Triditional Chinese: \n\n{comments}\n\n",
+#         temperature = 0.7,
+#         max_tokens = 3000
+#         )
+#     translated_comments = translate_result['choices'][0]['text'].encode('utf-8').decode('utf-8')
+#     print(translated_comments)
 
 
+# else:
+#     print("fail")
+
+
+today = datetime.datetime.now()
+date = today.strftime('%m/%d')
+print("!!! Active !!! date: ", date)
+text = ""
+url = f'https://api.wikimedia.org/feed/v1/wikipedia/zh/onthisday/selected/{date}'
+wiki_headers = {
+    'Authorization': f'Bearer {WIKI_TOKEN}',
+    'User-Agent': WIKI_MAIL
+}
+wiki_response = requests.get(url, headers=wiki_headers)
+
+if wiki_response.status_code != 200:
+    print("Error broadcasting message: ", wiki_response.status_code, wiki_response.text)
 else:
-    print("fail")
+    print("Message broadcasted successfully!")
