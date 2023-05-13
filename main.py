@@ -24,12 +24,17 @@ def hello_pubsub(cloud_event):
         'Authorization': f'Bearer {WIKI_TOKEN}',
         'User-Agent': WIKI_MAIL
     }
+
+    if(cloud_event.message.text == "test"):
+        print("收到測試請求")
+
     wiki_response = requests.get(url, headers=wiki_headers)
     if wiki_response.status_code != 200:
         print("Error! ->", wiki_response.status_code, wiki_response.text)
     response = wiki_response.json().get('selected')
     data_set = {"messages": []}
     nasa_data_set = {"messages": []}
+    nasa_image_final_set = {"messages": []}
     for i in response:
         year = i['pages'][0]['title']
         message = i['text']
@@ -73,6 +78,7 @@ def hello_pubsub(cloud_event):
             "text": translated_text
         }
         nasa_data_set["messages"].append(nasa_text_set)
+        nasa_image_final_set["messages"].append(nasa_image_set)
     print("all data set...broadcasting to Line...")
     # Line broadcast section
     try:
