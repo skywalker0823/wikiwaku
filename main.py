@@ -25,9 +25,6 @@ def hello_pubsub(cloud_event):
         'User-Agent': WIKI_MAIL
     }
 
-    if(cloud_event.message.text == "test"):
-        print("收到測試請求")
-
     wiki_response = requests.get(url, headers=wiki_headers)
     if wiki_response.status_code != 200:
         print("Error! ->", wiki_response.status_code, wiki_response.text)
