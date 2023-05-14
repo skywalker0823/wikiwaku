@@ -65,10 +65,10 @@ def hello_pubsub(cloud_event):
             max_tokens = 3000
         )
         translated_text = translate_response['choices'][0]['text'].encode('utf-8').decode('utf-8')
+        # Finding ways to send image that can preview in Line
         nasa_image_set = {
-            "type": "image",
-            "originalContentUrl": nasa_image,
-            "previewImageUrl": nasa_image
+            "type": "text",
+            "originalContentUrl": nasa_image
         }
         nasa_text_set = {
             "type": "text",
