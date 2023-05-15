@@ -81,7 +81,7 @@ def hello_pubsub(cloud_event):
     try:
         today_r = requester("today", today_date_info)
         r = requester("data", data_set)
-        nasa_image_r = requester("nasa_image", nasa_image_set)
+        nasa_image_r = requester("nasa_image", nasa_image_final_set)
         nasa_r = requester("nasa_text", nasa_data_set)
         print(">>>>> Results:  ",today_r, r, nasa_image_r, nasa_r)
     except Exception as e:
