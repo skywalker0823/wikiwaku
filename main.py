@@ -67,8 +67,9 @@ def hello_pubsub(cloud_event):
         translated_text = translate_response['choices'][0]['text'].encode('utf-8').decode('utf-8')
         # Finding ways to send image that can preview in Line =皿=
         nasa_image_set = {
-            "type": "text",
-            "text": f"(測試中)圖片請點這裡: {nasa_image}"
+            "type": "image",
+            "originalContentUrl": nasa_image,
+            "previewImageUrl": nasa_image
         }
         nasa_text_set = {
             "type": "text",

@@ -31,7 +31,7 @@ dotenv.load_dotenv()
 
 WIKI_TOKEN = os.getenv('Wiki_token')
 WIKI_MAIL = os.getenv('My_mail')
-CHANNEL_ACCESS_TOKEN = os.getenv('Channel_Access_Token')
+CHANNEL_ACCESS_TOKEN = os.getenv('Test_Access_Token')
 NASA_API_KEY = os.getenv('NASA_API_KEY')
 openai.api_key = os.getenv('OPEN_AI_API_KEY')
 
@@ -114,18 +114,42 @@ openai.api_key = os.getenv('OPEN_AI_API_KEY')
 #     print("fail")
 
 
-today = datetime.datetime.now()
-date = today.strftime('%m/%d')
-print("!!! Active !!! date: ", date)
-text = ""
-url = f'https://api.wikimedia.org/feed/v1/wikipedia/zh/onthisday/selected/{date}'
-wiki_headers = {
-    'Authorization': f'Bearer {WIKI_TOKEN}',
-    'User-Agent': WIKI_MAIL
-}
-wiki_response = requests.get(url, headers=wiki_headers)
+# today = datetime.datetime.now()
+# date = today.strftime('%m/%d')
+# print("!!! Active !!! date: ", date)
+# text = ""
+# url = f'https://api.wikimedia.org/feed/v1/wikipedia/zh/onthisday/selected/{date}'
+# wiki_headers = {
+#     'Authorization': f'Bearer {WIKI_TOKEN}',
+#     'User-Agent': WIKI_MAIL
+# }
+# wiki_response = requests.get(url, headers=wiki_headers)
 
-if wiki_response.status_code != 200:
-    print("Error broadcasting message: ", wiki_response.status_code, wiki_response.text)
+# if wiki_response.status_code != 200:
+#     print("Error broadcasting message: ", wiki_response.status_code, wiki_response.text)
+# else:
+#     print("Message broadcasted successfully!")
+
+
+data = {
+    "messages": [
+        {
+            "type": "text",
+            "text": "https://apod.nasa.gov/apod/image/0712/holmespan_nanz.jpg"
+        }
+    ]
+}
+
+
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {CHANNEL_ACCESS_TOKEN}"
+}
+
+response = requests.post("https://api.line.me/v2/bot/message/broadcast", data=json.dumps(data), headers=headers)
+
+if response.status_code != 200:
+    print("Error broadcasting message: ", response.status_code, response.text)
 else:
     print("Message broadcasted successfully!")
+    
