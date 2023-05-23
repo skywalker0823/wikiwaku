@@ -37,7 +37,7 @@
 5. Cloud Pub/Sub 觸發 Cloud Function
 - 1. 抓取歷史上的今天(可以指定zh, en, ja 等語言)
 - 2. 抓Nasa每日一圖
-- 3. 把Nasa資料藉由OpenAI API翻譯成中文
+- 3. 把Nasa原文資料藉由OpenAI API翻譯成中文
 - 4. 把以上資料整理成Line的格式 then GO~ 
 
 # 未來功能
