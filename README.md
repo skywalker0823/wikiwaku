@@ -1,6 +1,7 @@
 # Greps wikipedia history of today and NSAS APOD every morning, and broadcast to Line messenger.
 ## Hosted on Google Cloud Platform with fully automated CI/CD pipeline
-<img width="1037" alt="截圖 2023-04-20 上午10 36 52" src="https://user-images.githubusercontent.com/56625237/233243183-7c6d4a07-61bc-4038-9cd8-e2a5c5947e5f.png">
+
+<img width="1117" alt="截圖 2023-05-23 上午11 34 26" src="https://github.com/skywalker0823/wikiwaku/assets/56625237/17abd8f3-e30e-4474-850d-16f34ad34735">
 
 
 <img src="https://github.com/skywalker0823/wikiwaku/assets/56625237/dbe01c01-c0c6-49fd-8312-8e871a960bfb" alt="IMG_3558" width="300">
