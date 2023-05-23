@@ -1,4 +1,5 @@
 # Greps wikipedia history of today and NSAS APOD every morning, and broadcast to Line messenger.
+## Hosted on Google Cloud Platform with fully automated CI/CD pipeline
 <img width="1037" alt="截圖 2023-04-20 上午10 36 52" src="https://user-images.githubusercontent.com/56625237/233243183-7c6d4a07-61bc-4038-9cd8-e2a5c5947e5f.png">
 
 
