@@ -2,6 +2,10 @@
 <img width="1037" alt="截圖 2023-04-20 上午10 36 52" src="https://user-images.githubusercontent.com/56625237/233243183-7c6d4a07-61bc-4038-9cd8-e2a5c5947e5f.png">
 
 
+![IMG_3558](https://github.com/skywalker0823/wikiwaku/assets/56625237/dbe01c01-c0c6-49fd-8312-8e871a960bfb)
+![IMG_3557](https://github.com/skywalker0823/wikiwaku/assets/56625237/99a3fbfb-4ac8-4ee9-acd2-29b9a64f256d)
+
+
 ## Tech Stack
 * Python
 * Cloud Build
