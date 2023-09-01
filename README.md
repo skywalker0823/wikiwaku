@@ -1,4 +1,4 @@
-# Greps wikipedia history of today and NSAS APOD every morning, and broadcast to Line messenger.
+# Greps wikipedia history of today and NASA APOD every morning(with chatGPT API translated), and broadcast to Line messenger.
 ## Hosted on Google Cloud Platform with fully automated CI/CD pipeline
 
 <img width="1117" alt="截圖 2023-05-23 上午11 34 26" src="https://github.com/skywalker0823/wikiwaku/assets/56625237/17abd8f3-e30e-4474-850d-16f34ad34735">
