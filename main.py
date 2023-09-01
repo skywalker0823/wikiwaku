@@ -13,6 +13,7 @@ openai.api_key = os.getenv('OPEN_AI_API_KEY')
 
 
 # Wiki API section
+# 主動推播
 @functions_framework.cloud_event
 def hello_pubsub(cloud_event):
     today = datetime.datetime.now()
@@ -101,11 +102,16 @@ def requester(section,data):
 
 
 
+# Webhook section
+@app.get("/")
+async def hello_world():
+    print("Active...by get")
+    return {"message": "Hello World"}
 
 
-# Line webhook response ok
 @app.post("/")
 async def line_webhook(request: Request):
+    print("Webhook is active...by post")
     if request.method == 'POST':
         data = request.get_json()
         events = data['events']
@@ -118,6 +124,9 @@ async def line_webhook(request: Request):
     else:
         print('Webhook error')
         return 'Webhook error'
+
+# response to specific magic word
+
     
 
 # if __name__ == '__main__':
