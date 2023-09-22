@@ -1,6 +1,8 @@
 # Greps wikipedia history of today and NASA APOD every morning(with chatGPT API translated), and broadcast to Line messenger.
 ## Hosted on Google Cloud Platform with fully automated CI/CD pipeline
 
+2023/09/22 更新: 由於 Line 把免費訊息額度500調整至200，這裡之後將會切換到Telegram，並且計劃加入其他功能，讓每日推薦更加有趣。
+
 <img width="1117" alt="截圖 2023-05-23 上午11 34 26" src="https://github.com/skywalker0823/wikiwaku/assets/56625237/17abd8f3-e30e-4474-850d-16f34ad34735">
 
 

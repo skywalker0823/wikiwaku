@@ -86,6 +86,11 @@ def hello_pubsub(cloud_event):
         nasa_image_r = requester("nasa_image", nasa_image_final_set)
         nasa_r = requester("nasa_text", nasa_data_set)
         print(">>>>> Results:  ",today_r, r, nasa_image_r, nasa_r)
+        if today_r['status'] == 200 and r['status'] == 200 and nasa_image_r['status'] == 200 and nasa_r['status'] == 200:
+            print("Broadcasting to Line...successfully!")
+        else:
+            print("Error! ->", today_r['status'], r['status'], nasa_image_r['status'], nasa_r['status'])
+            usage_cap_broadcast()
     except Exception as e:
         print("Error broadcasting message: ", e)
 
@@ -100,6 +105,25 @@ def requester(section,data):
     return {"status": response.status_code, "section": section}
 
 
+def usage_cap_broadcast():
+    data = {
+        "messages": [
+            {
+                "type": "text",
+                "text": "本月已達使用上限(200)"
+            }
+        ]
+    }
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {CHANNEL_ACCESS_TOKEN}"
+    }
+    response = requests.post("https://api.line.me/v2/bot/message/broadcast", data=json.dumps(data), headers=headers)
+
+    if response.status_code != 200:
+        print("Error at broadcast error! ->", response.status_code, response.text)
+    else:
+        print("Broadcasting usage limit message...successfully!")
 
 
 # Webhook section
